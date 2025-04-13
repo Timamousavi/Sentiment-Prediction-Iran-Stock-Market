@@ -75,6 +75,6 @@ python src/models/train.py
 
 ## Contributing
 
-This is a research project. For collaboration inquiries, please contact the project maintainers.
+This is a research project. For collaboration inquiries, please contact me on fatemehmousavy@ut.ac.ir.
 
 
