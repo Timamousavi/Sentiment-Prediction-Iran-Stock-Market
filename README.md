@@ -1,21 +1,82 @@
-# Sentiment Prediction for the Iranian Stock Market
+# Iranian Stock Market Sentiment Analysis
+
+This project aims to predict investor sentiment in the Iranian stock market using behavioral data and machine learning techniques.
 
 ## Project Overview
-This project aims to predict market sentiment in the Iranian stock market using **behavioral data** such as **text from social media platforms**, **stock market news**, and **comments on forums**. By leveraging **Natural Language Processing (NLP)** techniques and **machine learning algorithms**, we aim to provide an analytical tool for investors to understand market sentiment and improve their decision-making.
 
-## Data Sources
-1. **Boursy.com**: Stock market forum data.
-2. **Telegram Channels**: Stock market-related discussions.
-3. **Financial News Sites**: News articles and headlines.
-4. **TSETMC**: Iranian stock market data.
+The project analyzes Persian-language behavioral data from multiple sources to predict market sentiment:
+- Stock forums (e.g., boursy.com)
+- Telegram channels
+- Financial news headlines
 
-## Getting Started
+## Project Structure
 
-### Prerequisites
-To run this project, you need to have **Python 3** installed. It's recommended to use a Python environment like **Anaconda**.
+```
+iranian_market_sentiment/
+├── data/
+│   ├── raw/                # Raw scraped data
+│   └── processed/          # Cleaned and processed datasets
+├── src/
+│   ├── data_collection/    # Web scraping and data gathering scripts
+│   ├── preprocessing/      # Text processing and feature extraction
+│   ├── models/            # ML model implementations
+│   └── evaluation/        # Model evaluation and metrics
+├── notebooks/             # Jupyter notebooks for analysis
+├── requirements.txt       # Project dependencies
+└── README.md             # Project documentation
+```
 
-### Dependencies
-The project requires the following Python libraries:
+## Setup and Installation
 
+1. Create a virtual environment:
 ```bash
-pip install requests beautifulsoup4 pandas hazm matplotlib scikit-learn xgboost
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## Data Collection
+
+The project collects data from three main sources:
+1. Iranian stock forums
+2. Telegram channels
+3. Financial news sources
+
+Data collection respects ethical guidelines and website terms of service.
+
+## Features
+
+- Persian text preprocessing using Hazm library
+- Custom financial sentiment lexicon
+- Multiple ML models (Logistic Regression, SVM, XGBoost)
+- Evaluation metrics (Accuracy, Precision, Recall)
+
+## Usage
+
+1. Data Collection:
+```bash
+python src/data_collection/scraper.py
+```
+
+2. Text Preprocessing:
+```bash
+python src/preprocessing/process_text.py
+```
+
+3. Model Training:
+```bash
+python src/models/train.py
+```
+
+
+## Contributing
+
+This is a research project. For collaboration inquiries, please contact the project maintainers.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 
