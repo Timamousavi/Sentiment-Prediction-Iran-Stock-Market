@@ -77,6 +77,4 @@ python src/models/train.py
 
 This is a research project. For collaboration inquiries, please contact the project maintainers.
 
-## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
