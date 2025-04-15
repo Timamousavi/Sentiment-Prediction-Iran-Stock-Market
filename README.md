@@ -1,80 +1,104 @@
 # Iranian Stock Market Sentiment Analysis
 
-This project aims to predict investor sentiment in the Iranian stock market using behavioral data and machine learning techniques.
-
 ## Project Overview
-
-The project analyzes Persian-language behavioral data from multiple sources to predict market sentiment:
-- Stock forums (e.g., boursy.com)
-- Telegram channels
-- Financial news headlines
+This project aims to analyze and predict investor sentiment in the Iranian stock market using Persian-language content from various sources. The goal is to create a tool that can help reduce emotional decision-making among retail investors by providing data-driven insights.
 
 ## Project Structure
-
 ```
-iranian_market_sentiment/
-├── data/
-│   ├── raw/                # Raw scraped data
-│   └── processed/          # Cleaned and processed datasets
-├── src/
-│   ├── data_collection/    # Web scraping and data gathering scripts
-│   ├── preprocessing/      # Text processing and feature extraction
-│   ├── models/            # ML model implementations
-│   └── evaluation/        # Model evaluation and metrics
-├── notebooks/             # Jupyter notebooks for analysis
-├── requirements.txt       # Project dependencies
-└── README.md             # Project documentation
+iranian-stock-sentiment-analysis/
+├── data/               # Data storage
+│   ├── raw/           # Raw scraped data
+│   └── processed/     # Processed and cleaned data
+├── docs/              # Documentation
+│   ├── api/          # API documentation
+│   └── reports/      # Analysis reports
+├── notebooks/         # Jupyter notebooks for analysis
+├── src/              # Source code
+│   ├── data/        # Data collection and processing
+│   ├── models/      # Machine learning models
+│   ├── utils/       # Utility functions
+│   └── api/         # API endpoints
+└── tests/            # Unit tests
 ```
 
-## Setup and Installation
+## Setup Instructions
 
-1. Create a virtual environment:
+### Prerequisites
+- Python 3.8 or higher
+- Git
+- Virtual environment (recommended)
+
+### Installation
+
+1. Clone the repository:
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+git clone https://github.com/yourusername/iranian-stock-sentiment-analysis.git
+cd iranian-stock-sentiment-analysis
 ```
 
-2. Install dependencies:
+2. Create and activate a virtual environment:
+```bash
+# Windows
+python -m venv venv
+.\venv\Scripts\activate
+
+# Linux/Mac
+python3 -m venv venv
+source venv/bin/activate
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-## Data Collection
+## Project Components
 
-The project collects data from three main sources:
-1. Iranian stock forums
-2. Telegram channels
-3. Financial news sources
+### 1. Data Collection
+- Web scraping of Persian financial forums
+- Telegram channel data collection
+- Financial news aggregation
 
-Data collection respects ethical guidelines and website terms of service.
+### 2. Text Processing
+- Persian text preprocessing using Hazm
+- Sentiment analysis
+- Feature extraction
 
-## Features
+### 3. Machine Learning Models
+- Logistic Regression
+- Support Vector Machine (SVM)
+- XGBoost
+- Deep Learning models (optional)
 
-- Persian text preprocessing using Hazm library
-- Custom financial sentiment lexicon
-- Multiple ML models (Logistic Regression, SVM, XGBoost)
-- Evaluation metrics (Accuracy, Precision, Recall)
+### 4. API Development
+- RESTful API for model predictions
+- Data visualization endpoints
 
-## Usage
+## Development Workflow
 
-1. Data Collection:
+1. Create a new branch for your feature:
 ```bash
-python src/data_collection/scraper.py
+git checkout -b feature/your-feature-name
 ```
 
-2. Text Preprocessing:
+2. Make your changes and commit them:
 ```bash
-python src/preprocessing/process_text.py
+git add .
+git commit -m "Description of your changes"
 ```
 
-3. Model Training:
+3. Push your changes and create a pull request:
 ```bash
-python src/models/train.py
+git push origin feature/your-feature-name
 ```
-
 
 ## Contributing
+Please read [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
-This is a research project. For collaboration inquiries, please contact me on fatemehmousavy@ut.ac.ir.
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-
+## Acknowledgments
+- Hazm library for Persian text processing
+- Various open-source machine learning libraries
+- Contributors and maintainers 
