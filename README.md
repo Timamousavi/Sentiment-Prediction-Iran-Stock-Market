@@ -163,5 +163,5 @@ For questions or suggestions, please open an issue or contact us at [fatemehmous
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by Tima Mousavi]</sub>
+  <sub>Built with ❤️ by Tima Mousavi</sub>
 </div> 
