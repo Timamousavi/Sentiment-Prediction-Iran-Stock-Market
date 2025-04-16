@@ -1,104 +1,86 @@
-# Iranian Stock Market Sentiment Analysis
+# Iranian Stock Market Sentiment Analysis Dataset
 
-## Project Overview
-This project aims to analyze and predict investor sentiment in the Iranian stock market using Persian-language content from various sources. The goal is to create a tool that can help reduce emotional decision-making among retail investors by providing data-driven insights.
+## Overview
+This dataset contains Persian financial text samples with sentiment labels, created for training sentiment analysis models in the context of Iranian stock market analysis.
 
-## Project Structure
-```
-iranian-stock-sentiment-analysis/
-├── data/               # Data storage
-│   ├── raw/           # Raw scraped data
-│   └── processed/     # Processed and cleaned data
-├── docs/              # Documentation
-│   ├── api/          # API documentation
-│   └── reports/      # Analysis reports
-├── notebooks/         # Jupyter notebooks for analysis
-├── src/              # Source code
-│   ├── data/        # Data collection and processing
-│   ├── models/      # Machine learning models
-│   ├── utils/       # Utility functions
-│   └── api/         # API endpoints
-└── tests/            # Unit tests
-```
+## Dataset Structure
+The dataset is stored in CSV format with the following columns:
 
-## Setup Instructions
+- `text`: Persian financial text (UTF-8 encoded)
+- `sentiment`: Sentiment label (0: negative, 1: positive, 2: neutral)
 
-### Prerequisites
-- Python 3.8 or higher
-- Git
-- Virtual environment (recommended)
+## Data Collection Methodology
+The dataset was created using a combination of:
+1. Manually curated financial statements
+2. Common stock market phrases
+3. Financial news headlines
+4. Forum discussions
 
-### Installation
+## Data Categories
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/iranian-stock-sentiment-analysis.git
-cd iranian-stock-sentiment-analysis
-```
+### Positive Sentiment (1)
+Examples of positive financial statements:
+- Stock price increases
+- Good financial performance
+- Positive analyst predictions
+- Growth indicators
 
-2. Create and activate a virtual environment:
-```bash
-# Windows
-python -m venv venv
-.\venv\Scripts\activate
+### Negative Sentiment (0)
+Examples of negative financial statements:
+- Stock price decreases
+- Poor financial performance
+- Negative analyst predictions
+- Risk indicators
 
-# Linux/Mac
-python3 -m venv venv
-source venv/bin/activate
-```
+### Neutral Sentiment (2)
+Examples of neutral financial statements:
+- Company announcements
+- General updates
+- Routine reports
+- Market status updates
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+## Usage
+```python
+import pandas as pd
 
-## Project Components
+# Load the dataset
+df = pd.read_csv('sample_dataset.csv', encoding='utf-8')
 
-### 1. Data Collection
-- Web scraping of Persian financial forums
-- Telegram channel data collection
-- Financial news aggregation
+# View sample data
+print(df.head())
 
-### 2. Text Processing
-- Persian text preprocessing using Hazm
-- Sentiment analysis
-- Feature extraction
-
-### 3. Machine Learning Models
-- Logistic Regression
-- Support Vector Machine (SVM)
-- XGBoost
-- Deep Learning models (optional)
-
-### 4. API Development
-- RESTful API for model predictions
-- Data visualization endpoints
-
-## Development Workflow
-
-1. Create a new branch for your feature:
-```bash
-git checkout -b feature/your-feature-name
+# Check sentiment distribution
+print(df['sentiment'].value_counts())
 ```
 
-2. Make your changes and commit them:
-```bash
-git add .
-git commit -m "Description of your changes"
-```
+## Data Statistics
+- Total samples: 1000
+- Positive samples: 333
+- Negative samples: 333
+- Neutral samples: 333
 
-3. Push your changes and create a pull request:
-```bash
-git push origin feature/your-feature-name
-```
+## Limitations
+1. This is a sample dataset and may not represent real-world distribution
+2. Limited to common financial phrases and statements
+3. May not cover all financial scenarios
+4. Needs to be supplemented with real-world data
 
-## Contributing
-Please read [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+## Future Improvements
+1. Add more diverse financial statements
+2. Include real-world data from financial websites
+3. Add more specific financial terms
+4. Include company-specific information
+
+## Citation
+If you use this dataset in your research, please cite:
+```
+Iranian Stock Market Sentiment Analysis Dataset
+Tima Mousavi 
+2025
+```
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This dataset is released under the MIT License. See the LICENSE file for details.
 
-## Acknowledgments
-- Hazm library for Persian text processing
-- Various open-source machine learning libraries
-- Contributors and maintainers 
+## Contact
+For questions or suggestions, please open an issue in the repository. 
