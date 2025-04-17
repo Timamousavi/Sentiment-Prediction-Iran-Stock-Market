@@ -1,4 +1,4 @@
-# 📈 Iranian Stock Market Sentiment Analysis
+#  Iranian Stock Market Sentiment Analysis
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 
 </div>
 
-## 🌟 Overview
+##  Overview
 
 This project aims to revolutionize investment decision-making in the Iranian stock market by leveraging advanced natural language processing and machine learning techniques. By analyzing Persian-language content from various financial sources, we provide data-driven insights to help investors make more informed decisions.
 
@@ -17,7 +17,7 @@ This project aims to revolutionize investment decision-making in the Iranian sto
   <img src="docs/images/sentiment-analysis.png" alt="Sentiment Analysis Flow" width="600"/>
 </div>
 
-## 🚀 Features
+##  Features
 
 - **Advanced Text Processing**
   - Persian text normalization and tokenization
@@ -42,13 +42,13 @@ This project aims to revolutionize investment decision-making in the Iranian sto
   - Batch processing
   - Detailed analysis reports
 
-## 📋 Prerequisites
+##  Prerequisites
 
 - Python 3.8 or higher
 - Git
 - Virtual environment (recommended)
 
-## 🛠️ Installation
+##  Installation
 
 1. **Clone the repository**
    ```bash
@@ -72,7 +72,7 @@ This project aims to revolutionize investment decision-making in the Iranian sto
    pip install -r requirements.txt
    ```
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 iranian-stock-sentiment-analysis/
@@ -91,7 +91,7 @@ iranian-stock-sentiment-analysis/
 └── tests/            # Unit tests
 ```
 
-## 🧪 Usage
+##  Usage
 
 ### Data Collection
 ```python
@@ -129,13 +129,13 @@ curl -X POST "http://localhost:8000/analyze" \
      -d '{"text": "سهام شرکت فولاد امروز با افزایش قیمت مواجه شد"}'
 ```
 
-## 📊 Results
+##  Results
 
 <div align="center">
   <img src="docs/images/results.png" alt="Analysis Results" width="800"/>
 </div>
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions! Please see our [Contributing Guidelines](docs/CONTRIBUTING.md) for details.
 
@@ -145,18 +145,18 @@ We welcome contributions! Please see our [Contributing Guidelines](docs/CONTRIBU
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
+##  License
 
 See the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - [Hazm](https://github.com/sobhe/hazm) - Persian text processing library
 - [Scikit-learn](https://scikit-learn.org/) - Machine learning library
 - [FastAPI](https://fastapi.tiangolo.com/) - Modern web framework
 - All contributors and maintainers
 
-## 📞 Contact
+##  Contact
 
 For questions or suggestions, please open an issue or contact us at [fatemehmousavy@ut.ac.ir](mailto:fatemehmousavy@ut.ac.ir).
 
