@@ -5,6 +5,10 @@ from typing import List, Dict, Optional
 import re
 from hazm import Normalizer, Stemmer, Lemmatizer, WordTokenizer
 import logging
+import json
+import os
+from persian_tools import digits
+from collections import Counter
 
 # Configure logging
 logging.basicConfig(
@@ -13,134 +17,136 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-class PersianTextProcessor:
-    """Processor for Persian text using Hazm library."""
-    
-    def __init__(self):
-        """Initialize the text processor with Hazm components."""
+class FinancialTextProcessor:
+    def __init__(self, custom_stopwords_path: Optional[str] = None):
+        """
+        Initialize the text processor with financial-specific features.
+        
+        Args:
+            custom_stopwords_path (str, optional): Path to custom stopwords file
+        """
+        # Initialize Hazm components
         self.normalizer = Normalizer()
         self.stemmer = Stemmer()
         self.lemmatizer = Lemmatizer()
         self.tokenizer = WordTokenizer()
         
-        # Common financial terms in Persian (can be expanded)
-        self.financial_terms = {
-            'سهام': 'stock',
-            'بورس': 'stock_market',
-            'قیمت': 'price',
-            'خرید': 'buy',
-            'فروش': 'sell',
-            'سود': 'profit',
-            'زیان': 'loss',
-            'تحلیل': 'analysis',
-            'تکنیکال': 'technical',
-            'فاندامنتال': 'fundamental'
-        }
+        # Load financial terms
+        self.financial_terms = self._load_financial_terms()
         
+        # Load stopwords
+        self.stopwords = self._load_stopwords(custom_stopwords_path)
+        
+        # Set up logging
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            filename='text_processing.log'
+        )
+        self.logger = logging.getLogger(__name__)
+
+    def _load_financial_terms(self) -> Dict[str, List[str]]:
+        """Load financial terms and their variations."""
+        financial_terms = {
+            'price': ['قیمت', 'نرخ', 'ارزش', 'بها'],
+            'increase': ['افزایش', 'رشد', 'صعود', 'بالا رفتن'],
+            'decrease': ['کاهش', 'نزول', 'افت', 'پایین آمدن'],
+            'stock': ['سهام', 'سهم', 'اوراق بهادار'],
+            'market': ['بازار', 'بورس', 'تالار'],
+            'company': ['شرکت', 'بنگاه', 'کارخانه'],
+            'profit': ['سود', 'منفعت', 'درآمد'],
+            'loss': ['زیان', 'ضرر', 'کسر'],
+            'dividend': ['سود سهام', 'سود تقسیمی'],
+            'volume': ['حجم', 'مقدار', 'تعداد'],
+            'trade': ['معامله', 'خرید و فروش', 'مبادله'],
+            'index': ['شاخص', 'نماگر', 'اندیکاتور'],
+            'forecast': ['پیش‌بینی', 'تخمین', 'برآورد'],
+            'analysis': ['تحلیل', 'بررسی', 'ارزیابی'],
+            'report': ['گزارش', 'خلاصه', 'نتیجه']
+        }
+        return financial_terms
+
+    def _load_stopwords(self, custom_path: Optional[str]) -> set:
+        """Load and combine default and custom stopwords."""
+        # Default Persian stopwords
+        default_stopwords = set([
+            'و', 'در', 'به', 'از', 'که', 'این', 'است', 'را', 'با', 'برای',
+            'آن', 'یک', 'های', 'یا', 'اما', 'تا', 'هم', 'شود', 'کرد', 'شد',
+            'بود', 'دارد', 'همه', 'همچنین', 'می', 'کنند', 'می‌شود', 'می‌کند'
+        ])
+        
+        # Financial-specific stopwords to remove
+        financial_stopwords = set([
+            'تاریخ', 'زمان', 'ساعت', 'روز', 'ماه', 'سال', 'دقیقه',
+            'ثانیه', 'هفته', 'فصل', 'دوره', 'مدت', 'زمانی'
+        ])
+        
+        # Combine default and financial stopwords
+        stopwords = default_stopwords.union(financial_stopwords)
+        
+        # Add custom stopwords if provided
+        if custom_path and os.path.exists(custom_path):
+            try:
+                with open(custom_path, 'r', encoding='utf-8') as f:
+                    custom_stopwords = set(json.load(f))
+                stopwords.update(custom_stopwords)
+            except Exception as e:
+                self.logger.error(f"Error loading custom stopwords: {str(e)}")
+        
+        return stopwords
+
     def normalize_text(self, text: str) -> str:
         """
-        Normalize Persian text using Hazm normalizer.
-        
-        Args:
-            text (str): Input text to normalize
-            
-        Returns:
-            str: Normalized text
-        """
-        try:
-            return self.normalizer.normalize(text)
-        except Exception as e:
-            logger.error(f"Error normalizing text: {str(e)}")
-            return text
-    
-    def tokenize(self, text: str) -> List[str]:
-        """
-        Tokenize Persian text using Hazm tokenizer.
-        
-        Args:
-            text (str): Input text to tokenize
-            
-        Returns:
-            List[str]: List of tokens
-        """
-        try:
-            return self.tokenizer.tokenize(text)
-        except Exception as e:
-            logger.error(f"Error tokenizing text: {str(e)}")
-            return text.split()
-    
-    def stem(self, word: str) -> str:
-        """
-        Stem a Persian word using Hazm stemmer.
-        
-        Args:
-            word (str): Word to stem
-            
-        Returns:
-            str: Stemmed word
-        """
-        try:
-            return self.stemmer.stem(word)
-        except Exception as e:
-            logger.error(f"Error stemming word: {str(e)}")
-            return word
-    
-    def lemmatize(self, word: str) -> str:
-        """
-        Lemmatize a Persian word using Hazm lemmatizer.
-        
-        Args:
-            word (str): Word to lemmatize
-            
-        Returns:
-            str: Lemmatized word
-        """
-        try:
-            return self.lemmatizer.lemmatize(word)
-        except Exception as e:
-            logger.error(f"Error lemmatizing word: {str(e)}")
-            return word
-    
-    def remove_stopwords(self, tokens: List[str]) -> List[str]:
-        """
-        Remove common Persian stopwords from token list.
-        
-        Args:
-            tokens (List[str]): List of tokens
-            
-        Returns:
-            List[str]: Filtered tokens
-        """
-        # Common Persian stopwords (can be expanded)
-        stopwords = {
-            'و', 'در', 'به', 'از', 'که', 'این', 'است', 'را', 'با', 'برای',
-            'آن', 'یک', 'های', 'یا', 'اما', 'اگر', 'چون', 'چرا', 'چگونه'
-        }
-        
-        return [token for token in tokens if token not in stopwords]
-    
-    def extract_financial_terms(self, text: str) -> Dict[str, int]:
-        """
-        Extract and count financial terms from text.
+        Normalize Persian text with financial-specific rules.
         
         Args:
             text (str): Input text
             
         Returns:
-            Dict[str, int]: Dictionary of financial terms and their counts
+            str: Normalized text
         """
-        terms_count = {term: 0 for term in self.financial_terms.keys()}
+        # Basic normalization
+        text = self.normalizer.normalize(text)
         
-        for term in self.financial_terms.keys():
-            # Case-insensitive search for the term
-            pattern = re.compile(term, re.IGNORECASE)
-            terms_count[term] = len(pattern.findall(text))
+        # Convert Persian numbers to English
+        text = digits.convert_to_en(text)
+        
+        # Remove URLs
+        text = re.sub(r'http\S+|www.\S+', '', text)
+        
+        # Remove special characters but keep financial symbols
+        text = re.sub(r'[^\w\s$%+-]', ' ', text)
+        
+        # Remove extra whitespace
+        text = ' '.join(text.split())
+        
+        return text
+
+    def extract_financial_terms(self, text: str) -> List[str]:
+        """
+        Extract financial terms from text.
+        
+        Args:
+            text (str): Input text
             
-        return terms_count
-    
+        Returns:
+            List[str]: List of extracted financial terms
+        """
+        terms = []
+        tokens = self.tokenizer.tokenize(text)
+        
+        for token in tokens:
+            # Check if token is a financial term
+            for category, variations in self.financial_terms.items():
+                if token in variations:
+                    terms.append(category)
+                    break
+        
+        return terms
+
     def process_text(self, text: str) -> Dict:
         """
-        Process Persian text through the complete pipeline.
+        Process text with all available methods.
         
         Args:
             text (str): Input text
@@ -149,36 +155,56 @@ class PersianTextProcessor:
             Dict: Processed text features
         """
         # Normalize text
-        normalized_text = self.normalize_text(text)
+        normalized = self.normalize_text(text)
         
         # Tokenize
-        tokens = self.tokenize(normalized_text)
+        tokens = self.tokenizer.tokenize(normalized)
         
         # Remove stopwords
-        filtered_tokens = self.remove_stopwords(tokens)
+        filtered_tokens = [token for token in tokens if token not in self.stopwords]
         
         # Stem tokens
-        stemmed_tokens = [self.stem(token) for token in filtered_tokens]
+        stems = [self.stemmer.stem(token) for token in filtered_tokens]
         
         # Extract financial terms
-        financial_terms = self.extract_financial_terms(normalized_text)
+        financial_terms = self.extract_financial_terms(normalized)
+        
+        # Calculate term frequencies
+        term_freq = Counter(filtered_tokens)
         
         return {
             'original_text': text,
-            'normalized_text': normalized_text,
+            'normalized_text': normalized,
             'tokens': filtered_tokens,
-            'stemmed_tokens': stemmed_tokens,
-            'financial_terms': financial_terms
+            'stems': stems,
+            'financial_terms': financial_terms,
+            'term_frequencies': term_freq
         }
 
+    def batch_process(self, texts: List[str]) -> List[Dict]:
+        """
+        Process multiple texts in batch.
+        
+        Args:
+            texts (List[str]): List of input texts
+            
+        Returns:
+            List[Dict]: List of processed text features
+        """
+        return [self.process_text(text) for text in texts]
+
+# Example usage:
 if __name__ == "__main__":
-    # Example usage
-    processor = PersianTextProcessor()
-    sample_text = "سهام شرکت فولاد امروز با افزایش قیمت مواجه شد و تحلیل‌گران پیش‌بینی می‌کنند که این روند ادامه خواهد داشت."
+    # Initialize processor
+    processor = FinancialTextProcessor()
     
-    processed = processor.process_text(sample_text)
-    print("Original Text:", processed['original_text'])
-    print("Normalized Text:", processed['normalized_text'])
-    print("Tokens:", processed['tokens'])
-    print("Stemmed Tokens:", processed['stemmed_tokens'])
-    print("Financial Terms:", processed['financial_terms']) 
+    # Example text
+    text = "سهام شرکت فولاد امروز با افزایش ۲ درصدی مواجه شد و حجم معاملات به ۱۰ میلیون سهم رسید."
+    
+    # Process text
+    result = processor.process_text(text)
+    
+    print("Original Text:", result['original_text'])
+    print("Normalized Text:", result['normalized_text'])
+    print("Financial Terms:", result['financial_terms'])
+    print("Term Frequencies:", result['term_frequencies']) 
